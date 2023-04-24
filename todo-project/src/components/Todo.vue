@@ -11,11 +11,11 @@
             </button>
         </div>
         <div class="checkbox">
-            <input type="checkbox">
-            <p>view completed tasks</p>
+            <input type="checkbox" v-model="checkbox">
+            <label for="checkbox">view completed tasks</label>
         </div>
         <div class="table-body">
-            <table>
+            <table v-show="checkbox == false">
                 <thead>
                     <tr>
                         <th>Description</th>
@@ -39,6 +39,30 @@
                     </tr>
                 </tbody>
             </table>
+            <table v-show="checkbox == true">
+                <thead>
+                    <tr>
+                        <th>Description</th>
+                        <th>Date</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="(task, index) in todo" :key="index" v-show="task.completed == true">
+                        <td>{{ task.description }}</td>
+                        <td>{{ task.date }}</td>
+                        <td>
+                            <div v-show="task.completed == false">
+                                <button @click="toggleComplete(index)">complete</button>
+                            </div>
+                            <div v-show="task.completed == false">
+                                <button @click="toggleDelete(index)">delete</button>
+                            </div>
+                            <div v-if="task.completed">Completed</div>
+                        </td>                      
+                    </tr>
+                </tbody>
+            </table>
         </div>     
     </div>
 </template>
@@ -46,8 +70,9 @@
     export default{ 
         data(){
             return{
-                showComplete: true,
-                showDelete: true,
+                // showComplete: true,
+                // showDelete: true,
+                checkbox: false,
                 todo: [],
                 newTodo: {
                     description: "",
@@ -92,14 +117,16 @@
     display: flex;
 }
 table{
-    border: 1px solid;
+    
+    background-color: rgb(209, 209, 209);
 }
 table th{
-    border: 1px solid;
+    background-color: rgb(150, 150, 150);
+    
     padding: 5px;
 }
 table td{
-    border: 1px solid;
+  
     padding: 5px;
 }
 </style>
